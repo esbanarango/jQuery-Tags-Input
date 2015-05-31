@@ -195,6 +195,14 @@
     	var uniqueIdCounter = 0;
 
 		this.each(function() {
+         // If we have already initialized the field, do not do it again
+         if (typeof $(this).attr('data-tagsinput-init') !== 'undefined') {
+            return;
+         }
+
+         // Mark the field as having been initialized
+         $(this).attr('data-tagsinput-init', true);
+
 			if (settings.hide) {
 				$(this).hide();
 			}
@@ -353,25 +361,30 @@
 		}
 	};
 
-    /**
+   /**
      * check delimiter Array
      * @param event
      * @returns {boolean}
      * @private
      */
-    var _checkDelimiter = function(event){
-        var flag = false;// defalut no match
+   var _checkDelimiter = function(event){
+      var found = false;
+      if (event.which == 13) {
+         return true;
+      }
 
-        if(event.which == 13){// Enter
-            flag = true;
-        }
-
-        $.each(event.data.delimiter ,function(index, value){
-            if(event.which == value.charCodeAt(0)){
-                flag = true;
+      if (typeof event.data.delimiter === 'string') {
+         if (event.which == event.data.delimiter.charCodeAt(0)) {
+            found = true;
+         }
+      } else {
+         $.each(event.data.delimiter, function(index, delimiter) {
+            if (event.which == delimiter.charCodeAt(0)) {
+               found = true;
             }
-        });
+         });
+      }
 
-        return flag;
-    }
+      return found;
+   }
 })(jQuery);
