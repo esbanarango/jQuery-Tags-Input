@@ -345,6 +345,7 @@
 	$.fn.tagsInput.updateTagsField = function(obj,tagslist) {
 		var id = $(obj).attr('id');
 		$(obj).val(tagslist.join(delimiter[id]));
+		$(obj).trigger('change');
 	};
 
 	$.fn.tagsInput.importTags = function(obj,val) {
